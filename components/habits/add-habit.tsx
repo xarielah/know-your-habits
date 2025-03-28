@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface AddHabitProps {
@@ -21,14 +21,22 @@ interface AddHabitProps {
 
 export function AddHabit({ onAddHabit }: AddHabitProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [newHabit, setNewHabit] = useState({
-        habit: "",
+        description: "",
         type: "positive",
         timeOfDay: "morning",
     })
 
+    useEffect(() => {
+        if (newHabit.description.trim()) {
+            setIsDisabled(false)
+        } else {
+            setIsDisabled(true)
+        }
+    }, [newHabit])
+
     const handleChange = (e: any) => {
-        console.log("🚀 ~ handleChange ~ e:", e.target.name)
         setNewHabit({
             ...newHabit,
             [e.target.name]: e.target.value
@@ -38,6 +46,11 @@ export function AddHabit({ onAddHabit }: AddHabitProps) {
     const handleAddHabit = (habit: any) => {
         onAddHabit(habit);
         setIsDialogOpen(false)
+        setNewHabit({
+            description: '',
+            type: 'positive',
+            timeOfDay: 'morning'
+        })
     }
 
     return (
@@ -57,7 +70,7 @@ export function AddHabit({ onAddHabit }: AddHabitProps) {
                         <Label htmlFor="name" className="text-right">
                             Habit
                         </Label>
-                        <Input onChange={handleChange} id="habit" name="habit" placeholder="Ex. Woke up / Opened phone / etc..." value={newHabit.habit} className="col-span-3" />
+                        <Input onChange={handleChange} required id="description" name="description" placeholder="Ex. Woke up / Opened phone / etc..." value={newHabit.description} className="col-span-3" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="type" className="text-right">
@@ -94,7 +107,12 @@ export function AddHabit({ onAddHabit }: AddHabitProps) {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit" onClick={() => handleAddHabit(newHabit)}>Add to List</Button>
+                    <Button
+                        type="submit"
+                        disabled={isDisabled}
+                        onClick={() => handleAddHabit(newHabit)}>
+                        Add to List
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

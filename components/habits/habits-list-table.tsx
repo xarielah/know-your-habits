@@ -9,18 +9,23 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
+import { IHabit } from "@/lib/models/Habit";
+import { habitsService } from "@/services/habits/habits.client.service";
 import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { arrayMove, horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { useId } from "react";
 import { HabitsListTableRow } from "./habits-list-table-row";
 
 interface HabitsListTableProps {
-    habits: any[];
-    onDeleteHabit: (habit: any) => void;
-    setHabits: any;
+    habits: IHabit[];
+    onDeleteHabit: (habit: IHabit) => void;
+    setHabits: (habits: IHabit[]) => void;
+    currentDate: Date;
 }
 
-export function HabitsListTable({ habits, onDeleteHabit, setHabits }: HabitsListTableProps) {
+export function HabitsListTable({ habits, onDeleteHabit, setHabits, currentDate }: HabitsListTableProps) {
+    const id = useId();
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -32,43 +37,59 @@ export function HabitsListTable({ habits, onDeleteHabit, setHabits }: HabitsList
         const { active, over } = event;
 
         if (active.id !== over.id) {
-            setHabits((habits: any[]) => {
-                const oldIndex = habits.indexOf(active.id);
-                const newIndex = habits.indexOf(over.id);
+            const oldIndex = habits.findIndex(h => h._id === active.id);
+            const newIndex = habits.findIndex(h => h._id === over.id);
 
-                return arrayMove(habits, oldIndex, newIndex);
-            });
+            const reorderedHabits = arrayMove(habits, oldIndex, newIndex);
+
+            habitsService.reorder(reorderedHabits);
+
+            setHabits(reorderedHabits);
         }
     }
 
     return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Habit</TableHead>
-                    <TableHead className="w-max">Positive / Neutral / Negative</TableHead>
-                    <TableHead>Time of Day</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
-                    modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
-                    <SortableContext items={habits} strategy={horizontalListSortingStrategy}>
-                        {habits.map((habit, i) => (
-                            <HabitsListTableRow key={i} id={habit} habit={habit} onDeleteHabit={onDeleteHabit} />
-                        ))}
-                    </SortableContext>
-                </DndContext>
-            </TableBody>
-            <TableFooter>
-                <TableRow>
-                    <TableCell colSpan={3}>Total</TableCell>
-                    <TableCell className="text-right">{habits.length} habits</TableCell>
-                </TableRow>
-            </TableFooter>
-        </Table>
+        <DndContext
+            id={id}
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead></TableHead>
+                        <TableHead>Habit</TableHead>
+                        <TableHead></TableHead>
+                        <TableHead>When?</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {habits.length > 0 &&
+                        <SortableContext items={habits.map(h => h._id)} strategy={verticalListSortingStrategy}>
+                            {habits.map((habit) => (
+                                <HabitsListTableRow
+                                    key={habit._id}
+                                    id={habit._id}
+                                    habit={habit}
+                                    onDeleteHabit={onDeleteHabit}
+                                />
+                            ))}
+                        </SortableContext>}
+                    {habits.length === 0 && <TableRow>
+                        <TableCell
+                            colSpan={5}
+                            className="text-center py-4 w-full text-gray-400">
+                            Start adding your habits for {currentDate.toLocaleDateString()} to view them in the list
+                        </TableCell>
+                    </TableRow>}
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TableCell colSpan={5} className="text-right">Total of {habits.length} habits</TableCell>
+                    </TableRow>
+                </TableFooter>
+            </Table>
+        </DndContext>
     )
 }

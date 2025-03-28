@@ -1,70 +1,101 @@
 "use client";
+import HabitsDatePicker from "@/components/habits/habits-date-picker";
 import HabitsList from "@/components/habits/habits-list";
-import { useState } from "react";
+import { IHabit } from "@/lib/models/Habit";
+import { habitsService } from "@/services/habits/habits.client.service";
+import { useEffect, useState } from "react";
 
 const demoHabits = [
     {
-        habit: "Waking up early",
+        _id: '1',
+        description: "Waking up early",
         type: "positive",
         timeOfDay: "morning",
         createdAt: new Date().toISOString()
     },
     {
-        habit: "Drinking coffee",
+        _id: '2',
+        description: "Drinking coffee",
         type: "neutral",
         timeOfDay: "morning",
         createdAt: new Date().toISOString()
     },
     {
-        habit: "Reading newspaper",
+        _id: '3',
+        description: "Reading newspaper",
         type: "positive",
         timeOfDay: "morning",
         createdAt: new Date().toISOString()
     },
     {
-        habit: "Skipping breakfast",
+        _id: '4',
+        description: "Skipping breakfast",
         type: "negative",
         timeOfDay: "morning",
         createdAt: new Date().toISOString()
     },
     {
-        habit: "Procrastinating",
+        _id: '5',
+        description: "Procrastinating",
         type: "negative",
         timeOfDay: "afternoon",
         createdAt: new Date().toISOString()
     },
     {
-        habit: "Evening walk",
+        _id: '6',
+        description: "Evening walk",
         type: "positive",
         timeOfDay: "evening",
         createdAt: new Date().toISOString()
     },
     {
-        habit: "Late-night snacking",
+        _id: '7',
+        description: "Late-night snacking",
         type: "negative",
         timeOfDay: "latenight",
         createdAt: new Date().toISOString()
     }
 ];
 
-export default function HabitsPage() {
-    const [habits, setHabits] = useState(demoHabits);
+const demoHabitsList = {
+    userId: 'user101',
+    habits: demoHabits
+}
 
-    const onAddHabit = (habit: any) => {
-        setHabits([...habits, habit]);
+export default function HabitsPage() {
+    const [habits, setHabits] = useState<IHabit[]>([]);
+    const [date, setDate] = useState<Date>(new Date());
+
+    useEffect(() => {
+        habitsService.get({ from: date })
+            .then(setHabits)
+    }, [date])
+
+    const onAddHabit = (habit: IHabit) => {
+        habitsService.add(habit)
+            .then(newHabit => {
+                let newHabits = [...habits, newHabit]
+                setHabits(habits => [...habits, newHabit]);
+                habitsService.reorder(newHabits);
+            })
     }
 
-    const onDeleteHabit = (habit: any) => {
-        setHabits(habits.filter(h => h.habit !== habit.habit));
+    const onDeleteHabit = (habit: IHabit) => {
+        habitsService.remove(habit._id)
+            .then(() => {
+                setHabits(habits => habits.filter(h => h._id !== habit._id));
+            })
     }
 
     return (
         <div className="flex flex-col gap-4">
+            <HabitsDatePicker onDateChange={setDate} currentDate={date} />
             <HabitsList
                 habits={habits}
                 onAddHabit={onAddHabit}
                 onDeleteHabit={onDeleteHabit}
                 setHabits={setHabits}
+                currentDate={date}
             />
         </div>
     )
