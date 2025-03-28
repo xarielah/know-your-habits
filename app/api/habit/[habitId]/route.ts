@@ -24,7 +24,7 @@ export async function DELETE(
   }
 }
 
-export async function PUT(req: Request, res: Response) {
+export async function PUT(req: Request) {
   try {
     return NextResponse.json({ message: "PUT Hello World" });
   } catch (error) {

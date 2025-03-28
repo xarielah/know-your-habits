@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { habitsService } from "./services/habits.server.service";
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const from = url.searchParams.get("from");
@@ -14,7 +14,7 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   try {
     let habit = await req.json();
     habit = habit.data;
