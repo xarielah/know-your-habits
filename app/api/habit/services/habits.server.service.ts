@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import Habit, { IHabit } from "@/lib/models/Habit";
+import { FilterQuery } from "mongoose";
 
 export const habitsService = {
   get,
@@ -15,7 +16,7 @@ export type FilterBy = {
 
 async function get(filterBy: FilterBy) {
   await dbConnect();
-  let filters: any = {};
+  let filters: FilterQuery<IHabit> = {};
 
   if (filterBy.from) {
     const startDate = new Date(filterBy.from);
@@ -27,7 +28,7 @@ async function get(filterBy: FilterBy) {
       endDate = new Date(filterBy.to);
       endDate.setHours(23, 59, 59, 999);
     } else {
-      const endDate = new Date(filterBy.from);
+      endDate = new Date(filterBy.from);
       endDate.setHours(23, 59, 59, 999);
     }
 
