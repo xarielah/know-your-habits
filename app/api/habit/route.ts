@@ -5,8 +5,9 @@ export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const from = url.searchParams.get("from");
+    const to = url.searchParams.get("to");
 
-    const habits = await habitsService.get({ from: from });
+    const habits = await habitsService.get({ from, to });
     return NextResponse.json(habits);
   } catch (error) {
     console.error("ERROR: couldn't get habits: ", error);

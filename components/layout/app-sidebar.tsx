@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { BookOpenText, Home, LayoutDashboard, Search, Settings } from "lucide-react"
 
 import {
     Sidebar,
@@ -11,7 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem
 } from "@/components/ui/sidebar"
-import AppSidebarFooter from "./app-sidebar-footer"
+import NavUser from "./nav-user"
 
 // Menu items.
 const firstGroupItems = [
@@ -23,12 +23,12 @@ const firstGroupItems = [
     {
         title: "Your Habits",
         url: "habits",
-        icon: Inbox,
+        icon: BookOpenText,
     },
     {
         title: "Dashboard",
         url: "dashboard",
-        icon: Calendar,
+        icon: LayoutDashboard,
     },
 ]
 
@@ -85,7 +85,7 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                <AppSidebarFooter />
+                <NavUser />
             </SidebarFooter>
         </Sidebar>
     )

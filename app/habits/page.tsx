@@ -1,9 +1,10 @@
 "use client";
 import HabitsDatePicker from "@/components/habits/habits-date-picker";
 import HabitsList from "@/components/habits/habits-list";
+import SearchHabits from "@/components/habits/search-habits";
 import { IHabit } from "@/lib/models/Habit";
 import { habitsService } from "@/services/habits/habits.client.service";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const demoHabits = [
     {
@@ -64,7 +65,17 @@ const demoHabitsList = {
 
 export default function HabitsPage() {
     const [habits, setHabits] = useState<IHabit[]>([]);
-    const [date, setDate] = useState<Date>(new Date());
+    const [date, setDate] = useState<Date>();
+    const [text, setText] = useState<string>("");
+
+    const habitsList = useMemo(() => {
+        if (!text) return habits;
+        return habits.filter(h => h.description.toLowerCase().includes(text.toLowerCase()))
+    }, [habits, text])
+
+    useEffect(() => {
+        setDate(new Date());
+    }, [])
 
     useEffect(() => {
         habitsService.get({ from: date })
@@ -88,15 +99,19 @@ export default function HabitsPage() {
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            <HabitsDatePicker onDateChange={setDate} currentDate={date} />
-            <HabitsList
-                habits={habits}
+        <section className="flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+                {date && <HabitsDatePicker onDateChange={setDate} currentDate={date} />}
+                <SearchHabits text={text} setText={setText} />
+            </div>
+            {date && <HabitsList
+                canDragAndDrop={!Boolean(text)}
+                habits={habitsList}
                 onAddHabit={onAddHabit}
                 onDeleteHabit={onDeleteHabit}
                 setHabits={setHabits}
                 currentDate={date}
-            />
-        </div>
+            />}
+        </section>
     )
 }

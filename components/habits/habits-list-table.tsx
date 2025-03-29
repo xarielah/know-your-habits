@@ -22,9 +22,10 @@ interface HabitsListTableProps {
     onDeleteHabit: (habit: IHabit) => void;
     setHabits: (habits: IHabit[]) => void;
     currentDate: Date;
+    canDragAndDrop: boolean
 }
 
-export function HabitsListTable({ habits, onDeleteHabit, setHabits, currentDate }: HabitsListTableProps) {
+export function HabitsListTable({ habits, onDeleteHabit, setHabits, currentDate, canDragAndDrop }: HabitsListTableProps) {
     const id = useId();
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -72,6 +73,7 @@ export function HabitsListTable({ habits, onDeleteHabit, setHabits, currentDate 
                                     key={habit._id}
                                     id={habit._id}
                                     habit={habit}
+                                    canDragAndDrop={canDragAndDrop}
                                     onDeleteHabit={onDeleteHabit}
                                 />
                             ))}

@@ -12,13 +12,15 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { isToday } from "@/services/util.service"
 
 interface DatePickerProps {
     onValueChange: (date: Date) => void
     value: Date;
+    showTodayButton?: boolean
 }
 
-export function DatePicker({ onValueChange, value }: DatePickerProps) {
+export function DatePicker({ onValueChange, value, showTodayButton = false }: DatePickerProps) {
     const [date, setDate] = React.useState<Date>(value)
 
     React.useEffect(() => {
@@ -36,7 +38,7 @@ export function DatePicker({ onValueChange, value }: DatePickerProps) {
                     )}
                 >
                     <CalendarIcon />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    {value ? format(value, "PPP") : <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -46,6 +48,8 @@ export function DatePicker({ onValueChange, value }: DatePickerProps) {
                     onSelect={(newValue) => setDate(newValue || value)}
                     initialFocus
                 />
+                {showTodayButton && <div className="flex items-center justify-center mb-3">
+                    <Button disabled={isToday(value)} onClick={() => setDate(new Date())} size="sm" variant="ghost">Go to Today</Button></div>}
             </PopoverContent>
         </Popover>
     )

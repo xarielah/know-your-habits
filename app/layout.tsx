@@ -1,17 +1,12 @@
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -31,12 +26,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${openSans.variable} antialiased`}
       >
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar />
-          <main className="flex-[1] p-2">
-            <SidebarTrigger className="mb-2" />
+          <main className="flex-[1]">
+            <SidebarTrigger className="m-2" />
             {children}
           </main>
         </SidebarProvider>

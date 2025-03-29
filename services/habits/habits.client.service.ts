@@ -1,4 +1,5 @@
 import { ReorderPayload } from "@/app/api/habit/reorder/route";
+import { FilterBy } from "@/app/api/habit/services/habits.server.service";
 import { IHabit } from "@/lib/models/Habit";
 import { httpService } from "../http.service";
 
@@ -10,7 +11,7 @@ export const habitsService = {
   reorder,
 };
 
-async function get(filterBy = {}): Promise<IHabit[]> {
+async function get(filterBy: FilterBy): Promise<IHabit[]> {
   return httpService
     .get<IHabit[]>("/api/habit", { params: filterBy })
     .then((res) => res.data);

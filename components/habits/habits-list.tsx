@@ -8,12 +8,13 @@ interface HabitsListProps {
     onDeleteHabit: (habit: IHabit) => void;
     setHabits: (habits: IHabit[]) => void;
     currentDate: Date;
+    canDragAndDrop: boolean;
 }
 
-export default function HabitsList({ habits, onAddHabit, onDeleteHabit, setHabits, currentDate }: HabitsListProps) {
+export default function HabitsList({ habits, onAddHabit, onDeleteHabit, setHabits, currentDate, canDragAndDrop }: HabitsListProps) {
     return (
         <div className="flex flex-col gap-4">
-            <HabitsListTable habits={habits} onDeleteHabit={onDeleteHabit} setHabits={setHabits} currentDate={currentDate} />
+            <HabitsListTable canDragAndDrop={canDragAndDrop} habits={habits} onDeleteHabit={onDeleteHabit} setHabits={setHabits} currentDate={currentDate} />
             <HabitsListFooter onAddHabit={onAddHabit} />
         </div>
     )

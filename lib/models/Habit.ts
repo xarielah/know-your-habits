@@ -20,6 +20,8 @@ export interface IHabit extends Document<string> {
   type: string;
   timeOfDay: string;
   order: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const habitSchema = new Schema(

@@ -8,8 +8,9 @@ export const habitsService = {
   delete: del,
 };
 
-type FilterBy = {
-  from?: string | null;
+export type FilterBy = {
+  from?: Date | string | null;
+  to?: Date | string | null;
 };
 
 async function get(filterBy: FilterBy) {
@@ -20,8 +21,15 @@ async function get(filterBy: FilterBy) {
     const startDate = new Date(filterBy.from);
     startDate.setHours(0, 0, 0, 0);
 
-    const endDate = new Date(filterBy.from);
-    endDate.setHours(23, 59, 59, 999);
+    let endDate;
+
+    if (filterBy.to) {
+      endDate = new Date(filterBy.to);
+      endDate.setHours(23, 59, 59, 999);
+    } else {
+      const endDate = new Date(filterBy.from);
+      endDate.setHours(23, 59, 59, 999);
+    }
 
     filters.createdAt = { $gte: startDate, $lt: endDate };
   }
