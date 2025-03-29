@@ -29,7 +29,6 @@ const habitSchema = new Schema(
     description: {
       type: String,
       required: true,
-      unique: true,
     },
     type: {
       type: String,

@@ -15,6 +15,7 @@ import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, us
 import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useId } from "react";
+import { Spinner } from "../ui/spinner";
 import { HabitsListTableRow } from "./habits-list-table-row";
 
 interface HabitsListTableProps {
@@ -23,9 +24,10 @@ interface HabitsListTableProps {
     setHabits: (habits: IHabit[]) => void;
     currentDate: Date;
     canDragAndDrop: boolean
+    loading: boolean
 }
 
-export function HabitsListTable({ habits, onDeleteHabit, setHabits, currentDate, canDragAndDrop }: HabitsListTableProps) {
+export function HabitsListTable({ habits, onDeleteHabit, setHabits, currentDate, canDragAndDrop, loading }: HabitsListTableProps) {
     const id = useId();
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -78,11 +80,18 @@ export function HabitsListTable({ habits, onDeleteHabit, setHabits, currentDate,
                                 />
                             ))}
                         </SortableContext>}
-                    {habits.length === 0 && <TableRow>
+                    {(habits.length === 0 && !loading) && <TableRow>
                         <TableCell
                             colSpan={5}
                             className="text-center py-4 w-full text-gray-400">
                             Start adding your habits for {currentDate.toLocaleDateString()} to view them in the list
+                        </TableCell>
+                    </TableRow>}
+                    {loading && <TableRow>
+                        <TableCell
+                            colSpan={5}
+                            className="text-center py-4 w-full text-gray-400">
+                            <Spinner className="w-12 h-12 text-gray-300" />
                         </TableCell>
                     </TableRow>}
                 </TableBody>

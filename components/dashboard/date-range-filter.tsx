@@ -4,12 +4,13 @@ import { DatePickerWithRange } from "../ui/date-picker-with-range";
 interface DateRangeFilterProps {
     currentDates: DateRange;
     onDateChange: (date: DateRange) => void;
+    disabled: boolean
 }
 
-export default function DateRangeFilter({ currentDates, onDateChange }: DateRangeFilterProps) {
+export default function DateRangeFilter({ currentDates, onDateChange, disabled }: DateRangeFilterProps) {
     return (
         <section>
-            <DatePickerWithRange onValueChange={onDateChange} value={currentDates} />
+            <DatePickerWithRange disabled={disabled} onValueChange={onDateChange} value={currentDates} />
         </section >
     )
 }

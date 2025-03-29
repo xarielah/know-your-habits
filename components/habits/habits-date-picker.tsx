@@ -3,12 +3,13 @@ import { DatePicker } from "../ui/date-picker";
 interface HabitsDateProps {
     onDateChange: (date: Date) => void;
     currentDate: Date;
+    disabled: boolean
 }
 
-export default function HabitsDatePicker({ onDateChange, currentDate }: HabitsDateProps) {
+export default function HabitsDatePicker({ onDateChange, currentDate, disabled }: HabitsDateProps) {
     return (
         <section className="flex items-center gap-2 px-2">
-            <DatePicker onValueChange={onDateChange} value={currentDate} showTodayButton />
+            <DatePicker disabled={disabled} onValueChange={onDateChange} value={currentDate} showTodayButton />
         </section>
     )
 }

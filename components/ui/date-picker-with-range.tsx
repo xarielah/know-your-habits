@@ -17,12 +17,14 @@ import { cn } from "@/lib/utils"
 interface DatePickerWithRangeProps {
     onValueChange: (date: DateRange) => void
     value: DateRange;
+    disabled?: boolean;
 }
 
 export function DatePickerWithRange({
     className,
     onValueChange,
     value,
+    disabled = false
 }: React.HTMLAttributes<HTMLDivElement> & DatePickerWithRangeProps) {
     const [date, setDate] = React.useState<DateRange | undefined>(value)
 
@@ -47,7 +49,8 @@ export function DatePickerWithRange({
                         variant={"outline"}
                         className={cn(
                             "w-[300px] justify-start text-left font-normal",
-                            !date && "text-muted-foreground"
+                            !date && "text-muted-foreground",
+                            disabled && "text-muted-foreground"
                         )}
                     >
                         <CalendarIcon />
@@ -67,6 +70,7 @@ export function DatePickerWithRange({
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
+                        disabled={disabled}
                         initialFocus
                         mode="range"
                         defaultMonth={date?.from}

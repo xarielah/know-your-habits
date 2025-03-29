@@ -17,9 +17,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 
 interface AddHabitProps {
     onAddHabit: (habit: any) => void;
+    disabled: boolean;
 }
 
-export function AddHabit({ onAddHabit }: AddHabitProps) {
+export function AddHabit({ onAddHabit, disabled }: AddHabitProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [newHabit, setNewHabit] = useState({
@@ -56,7 +57,7 @@ export function AddHabit({ onAddHabit }: AddHabitProps) {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button onClick={() => setIsDialogOpen(true)}>Add New Habit</Button>
+                <Button onClick={() => setIsDialogOpen(true)} disabled={disabled}>Add New Habit</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -109,7 +110,7 @@ export function AddHabit({ onAddHabit }: AddHabitProps) {
                 <DialogFooter>
                     <Button
                         type="submit"
-                        disabled={isDisabled}
+                        disabled={isDisabled || disabled}
                         onClick={() => handleAddHabit(newHabit)}>
                         Add to List
                     </Button>

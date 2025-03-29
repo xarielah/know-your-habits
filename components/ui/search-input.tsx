@@ -18,7 +18,7 @@ const SearchInput = ({ className, onClear, ...props }: InputProps) => {
     return (
         <div className="relative flex items-center gap-2">
             <div className="absolute inset-y-0 left-2 flex items-center">
-                <Search className="w-4 h-4" />
+                <Search className={cn("w-4 h-4", props.disabled && "text-muted-foreground")} />
             </div>
             <input
                 type="text"

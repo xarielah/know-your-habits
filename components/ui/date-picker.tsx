@@ -18,9 +18,10 @@ interface DatePickerProps {
     onValueChange: (date: Date) => void
     value: Date;
     showTodayButton?: boolean
+    disabled?: boolean;
 }
 
-export function DatePicker({ onValueChange, value, showTodayButton = false }: DatePickerProps) {
+export function DatePicker({ onValueChange, value, showTodayButton = false, disabled = false }: DatePickerProps) {
     const [date, setDate] = React.useState<Date>(value)
 
     React.useEffect(() => {
@@ -31,10 +32,12 @@ export function DatePicker({ onValueChange, value, showTodayButton = false }: Da
         <Popover>
             <PopoverTrigger asChild>
                 <Button
+                    disabled={disabled}
                     variant={"outline"}
                     className={cn(
                         "w-[240px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
+                        !date && "text-muted-foreground",
+                        disabled && "text-muted-foreground",
                     )}
                 >
                     <CalendarIcon />

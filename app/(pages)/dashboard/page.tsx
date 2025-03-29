@@ -10,6 +10,7 @@ import { DateRange } from "react-day-picker";
 
 export default function DashboardPage() {
     const [habits, setHabits] = useState<IHabit[]>([])
+    const [loading, setLoading] = useState(true)
     const today = new Date();
     today.setHours(23, 59, 59, 999);
     const [range, setRage] = useState<DateRange>({
@@ -18,17 +19,19 @@ export default function DashboardPage() {
     })
 
     useEffect(() => {
+        setLoading(true)
         habitsService.get({
             from: range.from?.toLocaleDateString('en-US'),
             to: range.to?.toLocaleDateString('en-US'),
         })
             .then(setHabits)
+            .finally(() => setLoading(false))
     }, [range])
 
     return (
         <section className="flex flex-col gap-4 px-2">
-            <DateRangeFilter currentDates={range} onDateChange={setRage} />
-            <Overview data={habits.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())} />
+            <DateRangeFilter disabled={loading} currentDates={range} onDateChange={setRage} />
+            <Overview loading={loading} data={habits.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())} />
         </section>
     )
 }

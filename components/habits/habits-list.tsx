@@ -1,5 +1,5 @@
 import { IHabit } from "@/lib/models/Habit";
-import HabitsListFooter from "./habits-list-footer";
+import { AddHabit } from "./add-habit";
 import { HabitsListTable } from "./habits-list-table";
 
 interface HabitsListProps {
@@ -9,13 +9,23 @@ interface HabitsListProps {
     setHabits: (habits: IHabit[]) => void;
     currentDate: Date;
     canDragAndDrop: boolean;
+    loading: boolean
 }
 
-export default function HabitsList({ habits, onAddHabit, onDeleteHabit, setHabits, currentDate, canDragAndDrop }: HabitsListProps) {
+export default function HabitsList({ habits, onAddHabit, onDeleteHabit, setHabits, currentDate, canDragAndDrop, loading }: HabitsListProps) {
     return (
         <div className="flex flex-col gap-4">
-            <HabitsListTable canDragAndDrop={canDragAndDrop} habits={habits} onDeleteHabit={onDeleteHabit} setHabits={setHabits} currentDate={currentDate} />
-            <HabitsListFooter onAddHabit={onAddHabit} />
+            <HabitsListTable
+                canDragAndDrop={canDragAndDrop}
+                habits={habits}
+                onDeleteHabit={onDeleteHabit}
+                setHabits={setHabits}
+                currentDate={currentDate}
+                loading={loading}
+            />
+            <div className="flex justify-end">
+                <AddHabit onAddHabit={onAddHabit} disabled={loading} />
+            </div>
         </div>
     )
 }

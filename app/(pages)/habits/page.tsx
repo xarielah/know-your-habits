@@ -67,6 +67,7 @@ export default function HabitsPage() {
     const [habits, setHabits] = useState<IHabit[]>([]);
     const [date, setDate] = useState<Date>();
     const [text, setText] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(true)
 
     const habitsList = useMemo(() => {
         if (!text) return habits;
@@ -79,8 +80,10 @@ export default function HabitsPage() {
 
     useEffect(() => {
         if (!date) return;
+        setLoading(true);
         habitsService.get({ from: date })
             .then(setHabits)
+            .finally(() => setLoading(false))
     }, [date])
 
     const onAddHabit = (habit: IHabit) => {
@@ -102,8 +105,8 @@ export default function HabitsPage() {
     return (
         <section className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
-                {date && <HabitsDatePicker onDateChange={setDate} currentDate={date} />}
-                <SearchHabits text={text} setText={setText} />
+                {date && <HabitsDatePicker disabled={loading} onDateChange={setDate} currentDate={date} />}
+                <SearchHabits disabled={loading} text={text} setText={setText} />
             </div>
             {date && <HabitsList
                 canDragAndDrop={!Boolean(text)}
@@ -112,6 +115,7 @@ export default function HabitsPage() {
                 onDeleteHabit={onDeleteHabit}
                 setHabits={setHabits}
                 currentDate={date}
+                loading={loading}
             />}
         </section>
     )
