@@ -33,15 +33,15 @@ const chartConfig = {
     },
     positive: {
         label: "Positive",
-        color: "hsl(var(--chart-1))",
+        color: "var(--color-green-200)",
     },
     negative: {
         label: "Negative",
-        color: "hsl(var(--chart-2))",
+        color: "var(--color-red-200)",
     },
     neutral: {
         label: "Neutral",
-        color: "hsl(var(--chart-3))",
+        color: "var(--color-cyan-200)",
     },
 } satisfies ChartConfig
 
