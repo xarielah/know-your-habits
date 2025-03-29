@@ -7,6 +7,10 @@ export async function GET(req: Request) {
     const from = url.searchParams.get("from");
     const to = url.searchParams.get("to");
 
+    if (!from) {
+      throw new Error("From date is missing");
+    }
+
     const habits = await habitsService.get({ from, to });
     return NextResponse.json(habits);
   } catch (error) {

@@ -78,6 +78,7 @@ export default function HabitsPage() {
     }, [])
 
     useEffect(() => {
+        if (!date) return;
         habitsService.get({ from: date })
             .then(setHabits)
     }, [date])
