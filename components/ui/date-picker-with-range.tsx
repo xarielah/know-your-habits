@@ -29,6 +29,8 @@ export function DatePickerWithRange({
     const handlePopoverChange = (open: boolean) => {
         if (!open) {
             if (date?.from && date?.to) {
+                date.from.setHours(0, 0, 0, 0);
+                date.to.setHours(23, 59, 59, 999);
                 onValueChange(date)
             } else {
                 setDate(value)

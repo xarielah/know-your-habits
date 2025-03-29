@@ -9,7 +9,7 @@ interface DateRangeFilterProps {
 export default function DateRangeFilter({ currentDates, onDateChange }: DateRangeFilterProps) {
     return (
         <section>
-            < DatePickerWithRange onValueChange={onDateChange} value={currentDates} />
+            <DatePickerWithRange onValueChange={onDateChange} value={currentDates} />
         </section >
     )
 }
