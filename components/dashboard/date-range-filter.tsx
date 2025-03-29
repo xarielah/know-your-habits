@@ -8,8 +8,8 @@ interface DateRangeFilterProps {
 
 export default function DateRangeFilter({ currentDates, onDateChange }: DateRangeFilterProps) {
     return (
-        <section className="flex items-center gap-2 px-2">
-            <DatePickerWithRange onValueChange={onDateChange} value={currentDates} />
-        </section>
+        <section>
+            < DatePickerWithRange onValueChange={onDateChange} value={currentDates} />
+        </section >
     )
 }
