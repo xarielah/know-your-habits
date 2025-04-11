@@ -1,6 +1,6 @@
+import { TableCell } from "@/components/ui/table";
 import { Equal, Minus, Plus } from "lucide-react";
 import { ReactNode } from "react";
-import { TableCell } from "../ui/table";
 
 interface DynamicTypeProps {
     value: string;

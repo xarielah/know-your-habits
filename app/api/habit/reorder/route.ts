@@ -1,4 +1,6 @@
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import { getUnauthedResponse } from "../../api.utils";
 import { habitsService } from "../services/habits.server.service";
 
 export interface ReorderPayload {
@@ -6,8 +8,11 @@ export interface ReorderPayload {
   order: number;
 }
 
-export async function PUT(req: Request) {
+export const PUT = auth(async function (req) {
   try {
+    if (!req.auth) {
+      return NextResponse.json(...getUnauthedResponse());
+    }
     let { data: habits }: Awaited<{ data: ReorderPayload[] }> =
       await req.json();
 
@@ -18,10 +23,14 @@ export async function PUT(req: Request) {
     //   { _id: "3", order: 3 },
     // ]
 
-    const reorderPromises: Promise<any>[] = [];
+    const reorderPromises: Array<Promise<void>> = [];
+
+    const userId = req.auth.user._id;
 
     habits.forEach((habit) => {
-      reorderPromises.push(habitsService.reorder(habit._id, habit.order));
+      reorderPromises.push(
+        habitsService.reorder(habit._id, userId, habit.order)
+      );
     });
 
     await Promise.all(reorderPromises);
@@ -37,4 +46,4 @@ export async function PUT(req: Request) {
       { status: 400 }
     );
   }
-}
+});

@@ -1,5 +1,5 @@
-import dbConnect from "@/lib/dbConnect";
-import Habit, { IHabit } from "@/lib/models/Habit";
+import dbConnect from "@/lib/db-connect";
+import Habit, { HabitDocument, IHabit } from "@/lib/models/Habit";
 import { FilterQuery } from "mongoose";
 
 export const habitsService = {
@@ -14,7 +14,9 @@ export type FilterBy = {
   to?: Date | string | null;
 };
 
-async function get(filterBy: FilterBy) {
+type ApiFilterBy = { userId: string } & FilterBy;
+
+async function get(filterBy: ApiFilterBy) {
   await dbConnect();
   let filters: FilterQuery<IHabit> = {};
 
@@ -32,23 +34,29 @@ async function get(filterBy: FilterBy) {
       endDate.setHours(23, 59, 59, 999);
     }
 
-    filters.createdAt = { $gte: startDate, $lt: endDate };
+    filters.createdAt;
   }
+
+  filters.userId = filterBy.userId;
 
   return Habit.find(filters).sort({ order: 1 }).exec();
 }
 
-async function add(habit: IHabit) {
+async function add(habit: HabitDocument) {
   await dbConnect();
   return Habit.create(habit);
 }
 
-async function del(habitId: string): Promise<void> {
+async function del(habitId: string, userId: string): Promise<void> {
   await dbConnect();
-  await Habit.findByIdAndDelete(habitId);
+  await Habit.findOneAndDelete({ _id: habitId, userId });
 }
 
-async function reorder(habitId: string, order: number): Promise<void> {
+async function reorder(
+  habitId: string,
+  userId: string,
+  order: number
+): Promise<void> {
   await dbConnect();
-  await Habit.findByIdAndUpdate(habitId, { order: order });
+  await Habit.findOneAndUpdate({ _id: habitId, userId }, { order });
 }

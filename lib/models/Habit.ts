@@ -15,13 +15,17 @@ export enum HabitTimeOfDayEnum {
   LATENIGHT = "latenight",
 }
 
-export interface IHabit extends Document<string> {
+export interface HabitDocument {
   description: string;
   type: string;
   timeOfDay: string;
-  order: number;
+  userId?: string;
+}
+
+export interface IHabit extends HabitDocument, Document<string> {
   createdAt: string;
   updatedAt: string;
+  order: number;
 }
 
 const habitSchema = new Schema(

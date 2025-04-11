@@ -9,28 +9,28 @@ export const httpService = {
 
 async function get<T>(
   url: string,
-  options?: AxiosRequestConfig<any> | undefined
+  options?: AxiosRequestConfig<T> | undefined
 ) {
   return axios.get<T>(url, options);
 }
 
 async function post<T>(
   url: string,
-  options?: AxiosRequestConfig<any> | undefined
+  options?: AxiosRequestConfig<T> | undefined
 ) {
   return axios.post<T>(url, options);
 }
 
 async function put<T>(
   url: string,
-  options?: AxiosRequestConfig<any> | undefined
+  options?: AxiosRequestConfig<T> | undefined
 ) {
   return axios.put<T>(url, options);
 }
 
 async function del<T>(
   url: string,
-  options?: AxiosRequestConfig<any> | undefined
+  options?: AxiosRequestConfig<T> | undefined
 ) {
   return axios.delete<T>(url, options);
 }

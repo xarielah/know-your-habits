@@ -1,67 +1,13 @@
 "use client";
-import HabitsDatePicker from "@/components/habits/habits-date-picker";
-import HabitsList from "@/components/habits/habits-list";
-import SearchHabits from "@/components/habits/search-habits";
+
+import HabitsDatePicker from "@/app/(pages)/(authed)/habits/components/habits-date-picker";
+import HabitsList from "@/app/(pages)/(authed)/habits/components/habits-list";
+import SearchHabits from "@/app/(pages)/(authed)/habits/components/search-habits";
+import Auth from "@/components/wrapper/auth-wrapper";
 import { IHabit } from "@/lib/models/Habit";
 import { habitsService } from "@/services/habits/habits.client.service";
 import { useEffect, useMemo, useState } from "react";
 
-const demoHabits = [
-    {
-        _id: '1',
-        description: "Waking up early",
-        type: "positive",
-        timeOfDay: "morning",
-        createdAt: new Date().toISOString()
-    },
-    {
-        _id: '2',
-        description: "Drinking coffee",
-        type: "neutral",
-        timeOfDay: "morning",
-        createdAt: new Date().toISOString()
-    },
-    {
-        _id: '3',
-        description: "Reading newspaper",
-        type: "positive",
-        timeOfDay: "morning",
-        createdAt: new Date().toISOString()
-    },
-    {
-        _id: '4',
-        description: "Skipping breakfast",
-        type: "negative",
-        timeOfDay: "morning",
-        createdAt: new Date().toISOString()
-    },
-    {
-        _id: '5',
-        description: "Procrastinating",
-        type: "negative",
-        timeOfDay: "afternoon",
-        createdAt: new Date().toISOString()
-    },
-    {
-        _id: '6',
-        description: "Evening walk",
-        type: "positive",
-        timeOfDay: "evening",
-        createdAt: new Date().toISOString()
-    },
-    {
-        _id: '7',
-        description: "Late-night snacking",
-        type: "negative",
-        timeOfDay: "latenight",
-        createdAt: new Date().toISOString()
-    }
-];
-
-const demoHabitsList = {
-    userId: 'user101',
-    habits: demoHabits
-}
 
 export default function HabitsPage() {
     const [habits, setHabits] = useState<IHabit[]>([]);
@@ -102,7 +48,7 @@ export default function HabitsPage() {
             })
     }
 
-    return (
+    return (<Auth>
         <section className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
                 {date && <HabitsDatePicker disabled={loading} onDateChange={setDate} currentDate={date} />}
@@ -118,5 +64,6 @@ export default function HabitsPage() {
                 loading={loading}
             />}
         </section>
+    </Auth>
     )
 }

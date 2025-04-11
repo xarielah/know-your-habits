@@ -1,6 +1,6 @@
+import { TableCell } from "@/components/ui/table"
 import { Moon, MoonStar, Sun, SunDim, SunMedium, Sunset } from "lucide-react"
 import { ReactNode } from "react"
-import { TableCell } from "../ui/table"
 
 interface DynamicTimeOfDayProps {
     value: string

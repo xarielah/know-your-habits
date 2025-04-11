@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface AddHabitProps {
     onAddHabit: (habit: any) => void;
@@ -57,7 +57,7 @@ export function AddHabit({ onAddHabit, disabled }: AddHabitProps) {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button onClick={() => setIsDialogOpen(true)} disabled={disabled}>Add New Habit</Button>
+                <Button className="mx-2" onClick={() => setIsDialogOpen(true)} disabled={disabled}>Add New Habit</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

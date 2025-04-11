@@ -1,4 +1,4 @@
-import { SearchInput } from "../ui/search-input";
+import { SearchInput } from "@/components/ui/search-input";
 
 interface SearchHabitsProps {
     text: string;

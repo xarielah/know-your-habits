@@ -1,6 +1,8 @@
+import { auth } from "@/auth";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
@@ -23,18 +25,22 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
+  const session = await auth();
+
   return (
     <html lang="en">
       <body
         className={`${openSans.variable} antialiased`}
       >
-        <SidebarProvider defaultOpen={defaultOpen}>
-          <AppSidebar />
-          <main className="flex-[1]">
-            <SidebarTrigger className="m-2" />
-            {children}
-          </main>
-        </SidebarProvider>
+        <SessionProvider session={session}>
+          <SidebarProvider defaultOpen={defaultOpen}>
+            <AppSidebar />
+            <main className="flex-[1]">
+              <SidebarTrigger className="m-2" />
+              {children}
+            </main>
+          </SidebarProvider>
+        </SessionProvider>
       </body>
     </html>
   );

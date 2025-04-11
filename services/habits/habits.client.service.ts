@@ -45,5 +45,7 @@ async function reorder(habits: IHabit[]) {
     return acc;
   }, []);
 
-  return httpService.put<void>("/api/habit/reorder", { data: payload });
+  return httpService.put<ReorderPayload[]>("/api/habit/reorder", {
+    data: payload,
+  });
 }

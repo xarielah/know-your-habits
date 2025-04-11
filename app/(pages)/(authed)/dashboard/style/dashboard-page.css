@@ -1,0 +1,18 @@
+.dashboards-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'filter filter' 'habits habits';
+    row-gap: 2em;
+}
+
+.habits-bar-chart {
+    grid-area: habits;
+}
+
+.overview-report {
+    grid-area: overview;
+}
+
+.dashboards-filter {
+    grid-area: filter;
+}

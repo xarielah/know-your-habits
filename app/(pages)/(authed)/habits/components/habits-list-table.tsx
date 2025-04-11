@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/ui/spinner";
 import {
     Table,
     TableBody,
@@ -15,7 +16,6 @@ import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, us
 import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useId } from "react";
-import { Spinner } from "../ui/spinner";
 import { HabitsListTableRow } from "./habits-list-table-row";
 
 interface HabitsListTableProps {

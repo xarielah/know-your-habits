@@ -1,4 +1,4 @@
-import { DatePicker } from "../ui/date-picker";
+import { DatePicker } from "@/components/ui/date-picker";
 
 interface HabitsDateProps {
     onDateChange: (date: Date) => void;

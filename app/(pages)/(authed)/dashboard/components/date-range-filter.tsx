@@ -1,5 +1,5 @@
+import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
 import { DateRange } from "react-day-picker";
-import { DatePickerWithRange } from "../ui/date-picker-with-range";
 
 interface DateRangeFilterProps {
     currentDates: DateRange;
@@ -9,7 +9,7 @@ interface DateRangeFilterProps {
 
 export default function DateRangeFilter({ currentDates, onDateChange, disabled }: DateRangeFilterProps) {
     return (
-        <section>
+        <section className="dashboards-filter">
             <DatePickerWithRange disabled={disabled} onValueChange={onDateChange} value={currentDates} />
         </section >
     )
